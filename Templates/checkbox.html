@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>chat-assisants</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <style>
+    /*  Basic styling for demo */
+
+    *,
+    html {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-weight: 700;
+      font-family: sans-serif;
+      color: rgba(75, 101, 132, 1);
+    }
+
+    h1 {
+      margin: 40px 0 20px 0;
+    }
+
+    div {
+      padding: 20px 0;
+      width: 100%;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    div+div+div {
+      border-top: 1px solid #dadada;
+    }
+
+    label {
+      font-weight: 700;
+      font-family: sans-serif;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    /* Hide elements visually, but not for screenreaders by clipping it */
+
+    .vh {
+      position: absolute !important;
+      clip: rect(1px, 1px, 1px, 1px);
+      padding: 0 !important;
+      border: 0 !important;
+      height: 1px !important;
+      width: 1px !important;
+      overflow: hidden;
+    }
+
+    /*  Add a :before to each label and style this as the checkbox you want to have */
+
+    label:before {
+      content: "";
+      width: 20px;
+      height: 20px;
+      background: #f2f2f2;
+      border: 1px solid rgba(75, 101, 132, 0.3);
+      display: inline-block;
+      margin-right: 16px;
+    }
+
+    /*  Change the styling of the :before when the hidden checkbox is checked, you also can add a background-image  */
+
+    input[type="checkbox"]:checked~label:before {
+      background: #20bf6b no-repeat center;
+      background-size: 12px 12px;
+      background-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCIgdmlld0JveD0iMCAwIDQ1LjcwMSA0NS43IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0NS43MDEgNDUuNzsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxnPgoJCTxwYXRoIGQ9Ik0yMC42ODcsMzguMzMyYy0yLjA3MiwyLjA3Mi01LjQzNCwyLjA3Mi03LjUwNSwwTDEuNTU0LDI2LjcwNGMtMi4wNzItMi4wNzEtMi4wNzItNS40MzMsMC03LjUwNCAgICBjMi4wNzEtMi4wNzIsNS40MzMtMi4wNzIsNy41MDUsMGw2LjkyOCw2LjkyN2MwLjUyMywwLjUyMiwxLjM3MiwwLjUyMiwxLjg5NiwwTDM2LjY0Miw3LjM2OGMyLjA3MS0yLjA3Miw1LjQzMy0yLjA3Miw3LjUwNSwwICAgIGMwLjk5NSwwLjk5NSwxLjU1NCwyLjM0NSwxLjU1NCwzLjc1MmMwLDEuNDA3LTAuNTU5LDIuNzU3LTEuNTU0LDMuNzUyTDIwLjY4NywzOC4zMzJ6IiBmaWxsPSIjRkZGRkZGIi8+Cgk8L2c+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==);
+    }
+
+    /*  Show when label and checkbox have focus, to make this keyboard accessible > press spacebar to select the checkbox */
+
+    input[type="checkbox"]:focus~label {
+      color: #20bf6b;
+    }
+
+    .button {
+      background-color: #04AA6D;
+      /* Green */
+      border: none;
+      color: white;
+      padding: 15px 30px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 30px 2px;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div id="checkboxdiv">
+          <div>
+            <h1>Choose your team</h1>
+          </div>
+          <div>
+            <input type="checkbox" value="Front end Team" id="frontend" class="vh">
+            <label for="frontend">Front end Team</label>
+          </div>
+          <div>
+            <input type="checkbox" value="Content Team" id="content" class="vh">
+            <label for="content">Content Team</label>
+          </div>
+
+          <div>
+            <input type="checkbox" value="Digital marketing Team" id="digitalmarketing" class="vh">
+            <label for="digitalmarketing">Digital marketing Team</label>
+          </div>
+        </div>
+        <button class="button" id="submit">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $('#submit').click(function () {
+      // var checkboxValues = $(':checkbox:checked').map(function() {
+      //   return $(this).val();
+
+      // }).get();
+
+      let frontend = $('#frontend:checked').val();
+      let content = $('#content:checked').val();
+      let digitalmarketing = $('#digitalmarketing:checked').val();
+
+      // Log or use the individual values as needed
+      console.log('Frontend:', frontend);
+      console.log('Content:', content);
+      console.log('Digital Marketing:', digitalmarketing);
+
+      if ($('#frontend').is(':checked')) {
+        // If frontend is checked, set chatid to '1234'
+        var ChatAssistanceId = 'asst_4Pfb5Qot8RKYFNJWCvhc1Ggf';
+        var ChatGptAssistance = frontend
+    } else if ($('#content').is(':checked')) {
+        // If backend is checked, set chatid to '5678'
+        var ChatAssistanceId = 'asst_rUDImoTqUaXpVBRQbzI4IK3X';
+        var ChatGptAssistance = content
+    } else if ($('#digitalmarketing').is(':checked')) {
+        // If backend is checked, set chatid to '5678'
+        var ChatAssistanceId = 'asst_aGpWTDIeRylI2K5l7fWGlhKM';
+        var ChatGptAssistance = digitalmarketing
+    }
+      userdata = {
+        "DML_Indicator": "AI",
+        "ChatAssistanceId": ChatAssistanceId,
+        "ChatGptAssistance": ChatGptAssistance
+      }
+      console.log(userdata);
+      $.ajax({
+        async: true,
+        type: 'POST',
+        url: 'https://spandanvideo.convenientcare.life/api/ChatGptUser/Login',
+        contentType: 'application/json; charset=UTF-8',
+        data: JSON.stringify(userdata),
+        success: function (data) {
+
+          //var data2 = JSON.parse(data);
+
+          if (data.msg == "Success") {
+            window.location.href = 'http://localhost:8501?Id='+ChatAssistanceId+'';
+            // alert("Login Successfully");
+
+          }
+          else {
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error("AJAX request failed:", status, error);
+          // Handle the error case here
+        }
+
+
+      });
+
+    });
+  </script>
+</body>
+
+</html>
